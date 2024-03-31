@@ -1,0 +1,145 @@
+# Ref. https://swagger.io/specification/
+openapi: '3.0.3'
+info:
+  title: 'Employee API'
+  version: 1.0.0
+paths:
+  '/v1/employees/{name}':
+    get:
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+            description: 조회할 직원의 이름
+      responses:
+        200:
+          description: 'returns the employee information'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        404:
+          description: 'the employee does not exist'
+
+  '/v1/employees':
+    get:
+      parameters:
+        - name: page
+          required: true
+          schema:
+            type: integer
+          in: query
+        - name: pageSize
+          required: true
+          schema:
+            type: integer
+          in: query
+      responses:
+        200:
+          description: 'returns the employee information'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateEmployee.Json'
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+          text/plain:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateEmployee.PlainText'
+      responses:
+        204:
+          description: 'the employee is created'
+
+components:
+  schemas:
+    Employee:
+      type: object
+      required:
+        - name
+        - email
+        - tel
+        - joined
+      properties:
+        name:
+          type: string
+          description: 직원 이름
+        email:
+          type: string
+          format: email
+          description: 직원 주소
+        tel:
+          type: string
+          pattern: '^\\d{3}-\\d{4}-\\d{4}$'
+          description: '전화번호 (형식: 010-1234-5678)'
+        joined:
+          type: string
+          format: date
+          description: '입사일 (형식: YYYY-MM-DD)'
+
+    CreateEmployee.Json:
+      type: object
+      required:
+        - name
+        - email
+        - tel
+        - joined
+      properties:
+        name:
+          type: string
+          description: 직원 이름
+        email:
+          type: string
+          format: email
+          description: 직원 주소
+        tel:
+          type: string
+          pattern: '^\\d{3}-\\d{4}-\\d{4}$'
+          description: '전화번호 (형식: 010-1234-5678)'
+        joined:
+          type: string
+          format: date
+          description: '입사일 (형식: YYYY-MM-DD)'
+
+    CreateEmployee.PlainText:
+      type: object
+      required:
+        - name
+        - email
+        - tel
+        - joined
+      properties:
+        name:
+          type: string
+          description: 직원 이름
+        email:
+          type: string
+          format: email
+          description: 직원 주소
+        tel:
+          type: string
+          pattern: '^\d{10,11}$'
+          description: '전화번호 (형식: 01012345678)'
+        joined:
+          type: string
+          format: date
+          description: '입사일 (형식: YYYY.MM.DD)'
