@@ -1,0 +1,42 @@
+# Default, Common properties of all environments
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  jpa:
+    show-sql: false
+  main:
+    banner-mode: off
+springdoc:
+  swagger-ui:
+    url: /docs/openapi.yaml
+    path: /apidoc
+  api-docs:
+    enabled: false
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+    web: info
+    sql: error
+    com.zaxxer: error
+    org.hibernate: error
+    org.hibernate.SQL: error
+    org.springframework: error
+    com.naheenosaur: info
+httpbin:
+  url: 'https://httpbin.org'
+---
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:20306/intranet
+    username: root
+    password: abcd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    storage_engine: innodb

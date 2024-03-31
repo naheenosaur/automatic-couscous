@@ -1,0 +1,12 @@
+<!-- Ref. https://docs.spring.io/spring-boot/docs/3.0.x/reference/html/features.html#features.logging -->
+<configuration>
+    <appender name="plain" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %green(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root>
+        <appender-ref ref="plain"/>
+    </root>
+</configuration>
