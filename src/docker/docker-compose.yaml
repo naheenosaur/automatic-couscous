@@ -1,0 +1,19 @@
+version: "3"
+services:
+    mysql:
+        container_name: local-mysql
+        image: docker.io/bitnami/mysql:8.0.23-debian-10-r85
+        restart: always
+        ports:
+            - "20306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: "abcd"
+            MYSQL_DATABASE: "intranet"
+        volumes:
+            - ../../mysql-data:/bitnami/mysql/data
+            - ./init.sql:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: [ 'CMD', '/opt/bitnami/scripts/mysql/healthcheck.sh' ]
+            interval: 15s
+            timeout: 5s
+            retries: 6
